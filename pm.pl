@@ -11,11 +11,11 @@ sync :- forall(dependency(URL, Version), download_to_disk(URL, Version)).
 
 add_dep(URL, Version) :- open('config.pl', append, Handle), 
                      format(atom(Formatted), 'dependency("~w", "~w").', [URL, Version]),
-                     write(Handle), 
+                     writeln(Handle, Formatted), 
                      close(Handle).
   
 add_dep(URL) :- open('config.pl', append, Handle), 
-            format(atom(Formatted), '\ndependency("~w", "latest").\n', [URL]),
-            write(Handle, Formatted), 
+            format(atom(Formatted), 'dependency("~w", "latest").', [URL]),
+            writeln(Handle, Formatted), 
             close(Handle).
    
