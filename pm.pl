@@ -13,13 +13,18 @@ download_to_disk(URL, Version) :-
 sync :- create_dir_if_needed,
         forall(dependency(URL, Version), download_to_disk(URL, Version)).
 
-add_dep(URL, Version) :- open('config.pl', append, Handle), 
-                     format(atom(Formatted), 'dependency("~w", "~w").', [URL, Version]),
-                     writeln(Handle, Formatted), 
-                     close(Handle).
+% add_dep(URL, Version) :- open('config.pl', append, Handle), 
+%                      format(atom(Formatted), 'dependency("~w", "~w").', [URL, Version]),
+%                      writeln(Handle, Formatted), 
+%                      close(Handle).
+
+url_found(URL) :- dependency(URL, _).
+write_needed(URL) :- \+ url_found(URL).
+write_dep(URL) :- open('config.pl', append, Handle), 
+                  format(atom(Formatted), 'dependency("~w", "latest").', [URL]),
+                  writeln(Handle, Formatted),
+                  print("Dependency added"),
+                  close(Handle).
+
   
-add_dep(URL) :- open('config.pl', append, Handle), 
-            format(atom(Formatted), 'dependency("~w", "latest").', [URL]),
-            writeln(Handle, Formatted), 
-            close(Handle).
-   
+add_dep(URL) :- ( write_needed(URL) -> write_dep(URL) ; print("Nothing to do") ).
