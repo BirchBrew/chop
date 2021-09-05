@@ -20,7 +20,6 @@ sync.
 
 ## Bugs
 1. `syncing` only downloads files that were in your `config.pl` file when you loaded it.
-2. `deps` folder should be created for you if necessary.
 
 ## Features
 1. Install dependencies of the file.
