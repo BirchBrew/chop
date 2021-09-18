@@ -20,4 +20,11 @@
 :- initialization(main, main).
 
 main(Argv) :-
-  writeln(Argv).
+  phrase(command(C), Argv),
+  format('Will run command ~q~n', [C]).
+
+command(run) --> [].
+command(run) --> [up].
+command(init) --> [chop].
+command(remove) --> [off].
+command(add_dep(Url)) --> [down, Url].
