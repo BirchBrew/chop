@@ -11,7 +11,7 @@ stream_line(In, Line) :-
 
 read_with_backtracking(In, Term) :-
                     repeat,
-                    catch(read(In, ReadTerm), error(syntax_error(_), _), fail),
+                    catch(read(In, ReadTerm), error(syntax_error(_), _), true),
                     (  ReadTerm \= end_of_file
                     -> ReadTerm = Term
                     ;  !,
@@ -20,5 +20,4 @@ read_with_backtracking(In, Term) :-
 find_deps(Path, Modules)
                     :-   open(Path, read, Handle),
                     findall((X, Y), read_with_backtracking(Handle, :- module(X, Y)), Modules),
-                    writeln(Modules),
                     close(Handle).

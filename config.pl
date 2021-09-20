@@ -3,3 +3,5 @@
 author("zak").
 license("MIT").
 dependency("https://raw.githubusercontent.com/ZakMiller/scryer-prolog/master/src/lib/uuid.pl", "latest").
+dependency("https://raw.githubusercontent.com/mndrix/amazon_api/master/prolog/amazon_api.pl", "latest").
+dependency("https://raw.githubusercontent.com/honnix/alternative_router/master/prolog/arouter.pl", "latest").
