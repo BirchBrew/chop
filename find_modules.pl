@@ -11,7 +11,7 @@ stream_line(In, Line) :-
 
 read_with_backtracking(In, Term) :-
                     repeat,
-                    read(In, ReadTerm),
+                    catch(read(In, ReadTerm), error(syntax_error(_), _), fail),
                     (  ReadTerm \= end_of_file
                     -> ReadTerm = Term
                     ;  !,
