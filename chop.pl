@@ -23,7 +23,12 @@
 
 main(Argv) :-
   phrase(command(C), Argv, Rest),
-  format('TODO should execute logic for {~q}. Extras ~q~n', [C, Rest]).
+  if_(Rest = [],
+      format('TODO should execute logic for `~q`~n', [C]),
+      write_help).
+
+write_help :-
+  writeln('TODO generate/write help message').
 
 command(run) --> [up].
 command(init) --> [chop].
