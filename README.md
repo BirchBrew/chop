@@ -15,13 +15,3 @@ add_dep("https://raw.githubusercontent.com/ZakMiller/scryer-prolog/master/src/li
 ```prolog
 sync.
 ```
-
-# TODO
-
-## Bugs
-1. Nested folders for dependency?
-2. Download whole repo?
-3. Validate that we're dealing with prolog.
-
-## Features
-1. Install dependencies of the file.
