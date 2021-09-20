@@ -1,3 +1,6 @@
+:- [deps/loader].
+
+:- use_module(library(reif)).
 :- use_module(library(optparse)).
 :- set_prolog_flag(double_quotes, chars).
 
@@ -11,20 +14,19 @@
 
   filter_argv([], []).
   filter_argv([First|Rest], Argv) :-
-    (  current_prolog_flag(saved_program, true)
-    -> Argv = Rest
-    ;  Argv = [First|Rest]
-    ).
+    if_(current_prolog_flag(saved_program, true),
+        Argv = Rest,
+        Argv = [First|Rest]).
 :- endif.
 
 :- initialization(main, main).
 
 main(Argv) :-
-  phrase(command(C), Argv),
-  format('Will run command ~q~n', [C]).
+  phrase(command(C), Argv, Rest),
+  format('TODO should execute logic for {~q}. Extras ~q~n', [C, Rest]).
 
-command(run) --> [].
 command(run) --> [up].
 command(init) --> [chop].
 command(remove) --> [off].
 command(add_dep(Url)) --> [down, Url].
+command(run) --> [].
