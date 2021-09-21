@@ -10,7 +10,7 @@ create_dir_if_needed :-
         ;  make_directory("deps")
     ).
      
-download_to_disk(URL, Version, PackageName) :- 
+download_dependency_to_disk(URL, Version, PackageName) :- 
     create_dir_if_needed,
     split_string(URL, "/", "", Pieces),
     last(Pieces, PackageName),
@@ -20,7 +20,7 @@ download_to_disk(URL, Version, PackageName) :-
 
 sync :- 
     create_dir_if_needed,
-    forall(dependency(URL, Version), download_to_disk(URL, Version, _)).
+    forall(dependency(URL, Version), download_dependency_to_disk(URL, Version, _)).
 
 write_source(Handle, Module, File) :-
     write_term(Handle, source(Module, File), [quoted(true), fullstop(true), nl(true)]).
@@ -42,21 +42,22 @@ update_sources_list(File) :-
    
 
 url_found(URL) :- dependency(URL, _).
-probably_add_dep(Handle, URL) :- 
-    write_term(Handle, dependency(URL, "latest"), [quoted(true), fullstop(true), nl(true)]).
+write_dependency_to_config(Handle, URL) :- 
+    setup_call_cleanup(
+        open('config.pl', append, Handle),
+        write_term(Handle, dependency(URL, "latest"), [quoted(true), fullstop(true), nl(true)]),
+        close(Handle)
+    ).
+    
        
 write_needed(URL) :- \+ url_found(URL),
                       verbose_log("New package"),
                       nl.
 write_dep(URL) :- 
-    download_to_disk(URL, _, PackageName),
+    download_dependency_to_disk(URL, _, PackageName),
     update_sources_list(PackageName),
-    setup_call_cleanup(
-        open('config.pl', append, Handle),
-        probably_add_dep(Handle, URL),
-        close(Handle)),
+    write_dependency_to_config(Handle, URL),
     verbose_log("Dependency added"),
-    print(PackageName),
     make.
 
   
