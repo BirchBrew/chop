@@ -4,11 +4,11 @@
 :- use_module(logger).
 
      
-create_dir_if_needed :-   (  exists_directory("deps")
-    -> true
-    ;  make_directory("deps"),
-    true
-).
+create_dir_if_needed :-  
+    (  exists_directory("deps")
+        -> true
+        ;  make_directory("deps").
+    ).
      
 download_to_disk(URL, Version, PackageName) :- 
     create_dir_if_needed,
