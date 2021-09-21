@@ -14,7 +14,7 @@ download_dependency_to_disk(URL, Version, PackageName) :-
     create_dir_if_needed,
     split_string(URL, "/", "", Pieces),
     last(Pieces, PackageName),
-    format(atom(Formatted), 'deps/~w', [PackageName]),
+    atom_concat('deps/', PackageName, Formatted),
     verbose_log("Downloading to disk."),
     down(URL, Formatted).   
 
@@ -26,7 +26,7 @@ write_source(Handle, Module, File) :-
     write_term(Handle, source(Module, File), [quoted(true), fullstop(true), nl(true)]).
 
 update_sources_list(File) :-
-    format(atom(Formatted), 'deps/~w', [File]),
+    atom_concat('deps/', File, Formatted),
     (\+ find_deps(Formatted, [(ModuleName, _)])
     -> verbose_log("No module declarations in file. Deleting from disk."),
     delete_file(Formatted),
