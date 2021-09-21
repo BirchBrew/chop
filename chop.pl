@@ -14,9 +14,10 @@
 
   filter_argv([], []).
   filter_argv([First|Rest], Argv) :-
-    if_(current_prolog_flag(saved_program, true),
-        Argv = Rest,
-        Argv = [First|Rest]).
+    (  current_prolog_flag(saved_program, true)
+    -> Argv = Rest
+    ;  Argv = [First|Rest]
+    ).
 :- endif.
 
 :- initialization(main, main).
