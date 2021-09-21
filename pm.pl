@@ -27,11 +27,11 @@ write_source(Handle, Module, File) :-
 
 update_sources_list(File) :-
     atom_concat('deps/', File, Formatted),
-    (\+ find_deps(Formatted, [(ModuleName, _)])
+    (\+ find_module_declaration(Formatted, ModuleName)
     -> verbose_log("No module declarations in file. Deleting from disk."),
     delete_file(Formatted),
     false
-    ; find_deps(Formatted, [(ModuleName, _)]),
+    ; find_module_declaration(Formatted, ModuleName),
       verbose_log("Found a module"),
       verbose_log(ModuleName),
     setup_call_cleanup(
