@@ -43,8 +43,7 @@ update_sources_list(File) :-
 
 url_found(URL) :- dependency(URL, _).
 probably_add_dep(Handle, URL) :- 
-    format(atom(Formatted), 'dependency("~w", "latest").', [URL]),
-    writeln(Handle, Formatted).
+    write_term(Handle, dependency(URL, "latest"), [quoted(true), fullstop(true), nl(true)]).
        
 write_needed(URL) :- \+ url_found(URL),
                       verbose_log("New package"),
