@@ -1,23 +1,21 @@
 :- module(find_modules, [find_deps/2]).
-
-stream_line(In, Line) :-
-    repeat,
-    (   read_line_to_string(In, Line0),
-        Line0 \== end_of_file
-    ->  Line0 = Line
-    ;   !,
-        fail
-    ).
+:- use_module(logger).
 
 read_with_backtracking(In, Term) :-
-                    repeat,
-                    catch(read(In, ReadTerm), error(syntax_error(_), _), true),
-                    (  ReadTerm \= end_of_file
-                    -> ReadTerm = Term
-                    ;  !,
-                       fail
-                    ).
-find_deps(Path, Modules)
-                    :-   open(Path, read, Handle),
-                    findall((X, Y), read_with_backtracking(Handle, :- module(X, Y)), Modules),
-                    close(Handle).
+    repeat,
+    read(In, ReadTerm),
+    (  ReadTerm \= end_of_file
+    -> ReadTerm = Term
+    ;  !,
+       fail
+    ).
+find_module_declaration(Handle, [(ModuleName, ModuleVersion)]) :-
+    read_with_backtracking(Handle, :- module(ModuleName, ModuleVersion)),
+    verbose_log("Found module").
+
+find_deps(Path, Modules) :-
+    setup_call_cleanup(
+        open(Path, read, Handle),
+        find_module_declaration(Handle, Modules),
+        close(Handle)
+    ).
