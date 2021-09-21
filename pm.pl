@@ -5,9 +5,9 @@
 
      
 create_dir_if_needed :-  
-    (  exists_directory("deps")
+    (  exists_directory(deps)
         -> true
-        ;  make_directory("deps")
+        ;  make_directory(deps)
     ).
      
 download_dependency_to_disk(URL, Version, PackageName) :- 
