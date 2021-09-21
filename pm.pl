@@ -7,7 +7,7 @@
 create_dir_if_needed :-  
     (  exists_directory("deps")
         -> true
-        ;  make_directory("deps").
+        ;  make_directory("deps")
     ).
      
 download_to_disk(URL, Version, PackageName) :- 
@@ -23,8 +23,7 @@ sync :-
     forall(dependency(URL, Version), download_to_disk(URL, Version, _)).
 
 write_source(Handle, Module, File) :-
-    format(atom(SourceLine), 'source("~w", "~w").', [Module, File]),
-    writeln(Handle, SourceLine).
+    write_term(Handle, source(Module, File), [quoted(true), fullstop(true), nl(true)]).
 
 update_sources_list(File) :-
     format(atom(Formatted), 'deps/~w', [File]),
