@@ -21,9 +21,9 @@ to build a standalone binary (Unix) or executable (Windows)
 ```sh
 $ swipl --stand_alone=true -o chop -c chop.pl
 ```
-or more conveniently to do that exact same thing, use the build script
+or more conveniently to do that exact same thing, use the Makefile
 ```sh
-$ ./build.sh
+$ make
 ```
 for Windows, the `.exe` file will still depend on a handfull of `.dll` files which can be found in `C:\Program Files\swipl\bin`. These are the required ones, which must be installed in the same directory as the executable or in a directory available through `%PATH%`:
 - libgcc_s_seh-1.dll

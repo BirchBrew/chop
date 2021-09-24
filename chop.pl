@@ -1,3 +1,6 @@
+:- [deps/loader].
+
+:- use_module(library(reif)).
 :- use_module(library(optparse)).
 :- set_prolog_flag(double_quotes, chars).
 
@@ -20,4 +23,16 @@
 :- initialization(main, main).
 
 main(Argv) :-
-  writeln(Argv).
+  phrase(command(C), Argv, Rest),
+  if_(Rest = [],
+      format('TODO should execute logic for `~q`~n', [C]),
+      write_help).
+
+write_help :-
+  writeln('TODO generate/write help message').
+
+command(run) --> [up].
+command(init) --> [chop].
+command(remove) --> [off].
+command(add_dep(Url)) --> [down, Url].
+command(run) --> [].
