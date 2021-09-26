@@ -31,8 +31,7 @@ update_sources_list(File) :-
     -> verbose_log("No module declarations in file. Deleting from disk."),
     delete_file(Formatted),
     false
-    ; find_module_declaration(Formatted, ModuleName),
-      verbose_log("Found a module"),
+    ; verbose_log("Found a module"),
       verbose_log(ModuleName),
     setup_call_cleanup(
         open('deps/sources.pl', append, Handle),
