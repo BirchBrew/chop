@@ -33,13 +33,3 @@ for Windows, the `.exe` file will still depend on a handfull of `.dll` files whi
 - zlib1.dll
 
 see [the SWI-Prolog docs](https://www.swi-prolog.org/FAQ/WinExe.html), though they're unfortunately a bit outdated here. I've opened [a PR to update them](https://github.com/SWI-Prolog/plweb-www/pull/45).
-
-# TODO
-
-## Bugs
-1. Nested folders for dependency?
-2. Download whole repo?
-3. Validate that we're dealing with prolog.
-
-## Features
-1. Install dependencies of the file.

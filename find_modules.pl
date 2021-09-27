@@ -1,30 +1,21 @@
-:- module(find_modules, [find_deps/1]).
+:- module(find_modules, [find_module_declaration/2]).
+:- use_module(logger).
 
-file_line(File, Line) :-
-    setup_call_cleanup(open(File, read, In),
-        stream_line(In, Line),
-        close(In)).
-
-stream_line(In, Line) :-
+read_with_backtracking(In, Term) :-
     repeat,
-    (   read_line_to_string(In, Line0),
-        Line0 \== end_of_file
-    ->  Line0 = Line
-    ;   !,
-        fail
+    read(In, ReadTerm),
+    (  ReadTerm \= end_of_file
+    -> ReadTerm = Term
+    ;  !,
+       fail
     ).
+find_module_declaration_worker(Handle, ModuleName) :-
+    read_with_backtracking(Handle, :- module(ModuleName, ModuleVersion)),
+    verbose_log("Found module").
 
-process(:- module(X, _)) :- write_canonical(X),nl.
-
-find_deps(Path) :-   open(Path, read, Handle),
-                    repeat,
-                    read(Handle, Term),
-                    (  Term == end_of_file
-                    -> !
-                    ;  process(Term),
-                    fail
-                    ),
-                    close(Handle).
-
-% find_deps(Path) :- file_line(Path, Line),
-%                     process(Line).
+find_module_declaration(Path, ModuleName) :-
+    setup_call_cleanup(
+        open(Path, read, Handle),
+        find_module_declaration_worker(Handle, ModuleName),
+        close(Handle)
+    ).
